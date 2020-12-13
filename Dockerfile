@@ -2,7 +2,7 @@ FROM node:14
 WORKDIR /app
 
 COPY package*.json tsconfig*.json ./
-RUN npm install
+RUN npm ci
 
 COPY src/ src/
 
