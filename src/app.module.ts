@@ -1,21 +1,46 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import {
+  Client,
+  ClientProxyFactory,
+  ClientsModule,
+  Transport,
+} from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'PRODUCT_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: [`amqp://${process.env.RMQ_ENDPOINT}:${process.env.RMQ_PORT}`],
-        },
-      },
-    ]),
-  ],
+  imports: [],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'PRODUCT_SERVICE',
+      useFactory: () => {
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [
+              `amqp://${process.env.RMQ_ENDPOINT}:${process.env.RMQ_PORT}`,
+            ],
+            queue: "product_queue"
+          },
+        });
+      },
+    },
+    {
+      provide: 'LOGGER_SERVICE',
+      useFactory: () => {
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [
+              `amqp://${process.env.RMQ_ENDPOINT}:${process.env.RMQ_PORT}`,
+            ],
+            queue: "logger_queue"
+          },
+        });
+      },
+    },
+  ],
 })
 export class AppModule {}

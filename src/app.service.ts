@@ -6,9 +6,10 @@ import { GetProductRequest } from './model/getProductRequest';
 export class AppService {
   constructor(
     @Inject('PRODUCT_SERVICE') private readonly productService: ClientProxy,
+    @Inject('LOGGER_SERVICE') private readonly loggerService: ClientProxy,
   ) {}
 
-  getProducts(request: GetProductRequest) {
+  async getProducts(request: GetProductRequest) {
     return this.productService.send<string>({ cmd: 'getProducts' }, request);
   }
 

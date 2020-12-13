@@ -14,7 +14,7 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {});
+  describe('products', () => {
+    it('should return list of products', () => {});
   });
 });

@@ -10,7 +10,7 @@ export class AppController {
   @Get('products')
   getProducts(@Query() viewRequest: GetProductViewRequest) {
     const request = {
-      branch: viewRequest.branch?.split(','),
+      branch: viewRequest?.branch?.split(','),
       name: viewRequest.name,
       maxPrice: viewRequest.maxPrice,
       minPrice: viewRequest.minPrice,
